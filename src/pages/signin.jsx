@@ -53,10 +53,10 @@ export default function SignIn() {
 
                       testLogin();
   return (
-    <div className="min-h-screen flex items-center justify-center bg-yellow-200">
+    <div className="min-h-screen flex items-center justify-center bg-blue-200">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         
-        <h2 className="text-2xl font-bold text-yellow-900 mb-6 text-center">
+        <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center">
           Welcome Back
         </h2>
         <form className="space-y-5"
@@ -69,7 +69,7 @@ export default function SignIn() {
             <input
               type="email"
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-700 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-700 focus:outline-none"
               placeholder="Enter your email"
             />
           </div>
@@ -82,14 +82,14 @@ export default function SignIn() {
             <input
               type="password"
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-700 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-700 focus:outline-none"
               placeholder="Enter your password"
             />
           </div>
 
           {/* Forgot password */}
           <div className="text-right">
-            <a href="/forgotpassword" className="text-sm text-yellow-800 hover:underline">
+            <a href="/forgotpassword" className="text-sm text-blue-800 hover:underline">
               Forgot password?
             </a>
           </div>
@@ -101,7 +101,7 @@ export default function SignIn() {
           
 
           
-          className="w-full bg-yellow-600 text-white py-2 rounded-lg hover:bg-yellow-700 transition"
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
         >
           Sign In
         </button>
@@ -129,7 +129,7 @@ export default function SignIn() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
-          <a href="/signup" className="text-yellow-800 font-medium hover:underline">
+          <a href="/signup" className="text-blue-800 font-medium hover:underline">
             Sign up
           </a>
         </p>

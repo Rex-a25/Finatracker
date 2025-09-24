@@ -16,13 +16,13 @@ export default function Hero() {
 
       <div className="relative z-10 text-center text-white px-6">
         <h1 className="text-5xl md:text-7xl font-bold mb-4">
-          Welcome to <span className="text-yellow-900">Finatrace</span>
+          Welcome to <span className="text-blue-900">Finatrace</span>
         </h1>
         <p className="text-lg md:text-2xl mb-6">
-          Plan your <span className="text-yellow-950">Finaces</span> as you go
+          Plan your <span className="text-blue-950">Finaces</span> as you go
         </p>
         <Link to="/signin">
-        <button className="px-6 py-3 bg-yellow-900 hover:bg-yellow-700 rounded-lg font-semibold">
+        <button className="px-6 py-3 bg-blue-900 hover:bg-blue-700 rounded-lg font-semibold">
           Get Started
         </button>
         </Link>

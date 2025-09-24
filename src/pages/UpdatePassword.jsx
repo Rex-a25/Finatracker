@@ -43,7 +43,7 @@ export default function UpdatePassword() {
 
           <button
             type="submit"
-            className="w-full bg-yellow-600 text-white py-2 rounded-lg hover:bg-yellow-700 transition"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
             Update Password
           </button>

@@ -11,7 +11,7 @@ export default function CTABanner() {
         </p>
         <a
           href="/signin" 
-          className="inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-300"
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-300"
         >
           Sign In to Continue
         </a>

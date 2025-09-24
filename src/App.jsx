@@ -10,6 +10,7 @@ import ForgotPassword from "./pages/forgotpassword";
 import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UpdatePassword from "./pages/UpdatePassword";
+import Report from "./pages/Reports";
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -48,10 +49,20 @@ return () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+              
             </ProtectedRoute>
           }
         />
+         <Route
+            path="/report"
+            element={
+              <ProtectedRoute>
+              {(user) => <Report user={user} />}
+              </ProtectedRoute>
+            }
+      />
       </Routes>
+    
     </>
   );
 }

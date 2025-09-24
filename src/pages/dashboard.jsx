@@ -4,6 +4,7 @@ import TransactionList from "../components/TransactionList";
 import BudgetOverview from "../components/BudgetOverview";
 import SavingsGoal from "../components/SavingsGoal";
 import CsvUpload from "../components/Csvuploads";
+// import SpendingChart from "../components/SpendingChart";
 
 export default function Dashboard() {
   const handleUploadComplete = () => {

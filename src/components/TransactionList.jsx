@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import { useNavigate } from 'react-router-dom';
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchTransactions();
-  }, []);
+  }, [showAll]);
 
   const fetchTransactions = async () => {
     try {
@@ -43,24 +45,34 @@ export default function TransactionList() {
     return type === 'income' ? `+$${amount.toFixed(2)}` : `-$${amount.toFixed(2)}`;
   };
 
+  const exportToCSV = () => {
+    if (!transactions.length) return;
+
+    const headers = ["Date", "Description", "Category", "Type", "Amount"];
+    const rows = transactions.map(t => [
+      formatDate(t.date),
+      `"${t.description || 'No description'}"`,
+      t.category || 'Uncategorized',
+      t.type,
+      t.amount
+    ]);
+
+    let csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "transactions_report.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return (
       <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 lg:p-8">
-        <div className="animate-pulse">
-          <div className="h-6 sm:h-7 bg-gray-300 rounded w-1/3 mb-4 sm:mb-6"></div>
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="flex items-center justify-between mb-4 last:mb-0">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-full"></div>
-                <div>
-                  <div className="h-4 bg-gray-300 rounded w-20 sm:w-24 mb-2"></div>
-                  <div className="h-3 bg-gray-200 rounded w-16"></div>
-                </div>
-              </div>
-              <div className="h-5 bg-gray-300 rounded w-12 sm:w-16"></div>
-            </div>
-          ))}
-        </div>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -90,7 +102,6 @@ export default function TransactionList() {
           <div className="text-center py-8 sm:py-12">
             <div className="text-gray-400 text-4xl mb-3">💸</div>
             <p className="text-gray-500 text-sm sm:text-base">No transactions yet</p>
-            <p className="text-gray-400 text-xs sm:text-sm mt-1">Add your first transaction to get started</p>
           </div>
         ) : (
           displayedTransactions.map((transaction) => (
@@ -98,7 +109,6 @@ export default function TransactionList() {
               key={transaction.id}
               className="flex items-center justify-between p-3 sm:p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
             >
-              {/* Transaction Icon and Details */}
               <div className="flex items-center space-x-3 sm:space-x-4">
                 <div
                   className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
@@ -109,7 +119,6 @@ export default function TransactionList() {
                 >
                   {transaction.type === 'income' ? '⬆️' : '⬇️'}
                 </div>
-                
                 <div className="min-w-0 flex-1">
                   <p className="text-sm sm:text-base font-medium text-gray-800 truncate">
                     {transaction.description || 'No description'}
@@ -124,8 +133,6 @@ export default function TransactionList() {
                   </div>
                 </div>
               </div>
-
-              {/* Amount */}
               <div className="text-right">
                 <p
                   className={`text-sm sm:text-base font-semibold ${
@@ -146,10 +153,14 @@ export default function TransactionList() {
       {transactions.length > 0 && (
         <div className="mt-4 sm:mt-6 pt-4 border-t border-gray-100">
           <div className="flex space-x-3">
-            <button className="flex-1 text-center text-xs sm:text-sm text-gray-600 hover:text-gray-800 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+            <button 
+              onClick={() => navigate("/report")} 
+              className="flex-1 text-center text-xs sm:text-sm text-gray-600 hover:text-gray-800 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
               📊 View Report
             </button>
-            <button className="flex-1 text-center text-xs sm:text-sm text-gray-600 hover:text-gray-800 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+            <button 
+              onClick={exportToCSV} 
+              className="flex-1 text-center text-xs sm:text-sm text-gray-600 hover:text-gray-800 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
               📁 Export CSV
             </button>
           </div>
