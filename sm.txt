@@ -1,115 +1,112 @@
-Got it 👍 let’s slow this down and I’ll **teach you step by step** how signup + Google login with Supabase works, so you can write it yourself instead of just pasting code.
+Ahhh — got it 😎
+
+You don’t want the *mouse follower blob* —
+you want **cool floating shapes (like circles, squares, or gradients)** sitting on the **side of the page**, that **slightly move or rotate in response to the mouse**, as if they’re *“looking at”* or reacting to it.
+
+Perfect for your signup/login layout.
+
+Here’s how you can do it 👇
 
 ---
 
-## 🧩 Step 1 – How Supabase Auth works
+## 🧠 Concept
 
-Supabase gives you **Auth APIs** for:
+We’ll:
 
-* **Email/password** (classic form signup)
-* **OAuth providers** (Google, GitHub, etc.)
-
-Both use the same `supabase.auth` object.
-
-Example calls:
-
-* `supabase.auth.signUp({ email, password })` → creates a new account.
-* `supabase.auth.signInWithPassword({ email, password })` → logs in with email/password.
-* `supabase.auth.signInWithOAuth({ provider: 'google' })` → starts Google login flow.
+1. Place a **column of abstract shapes** on one side of the screen (e.g. right side).
+2. Use Framer Motion’s `motion.div` and React’s `useEffect` to track the mouse.
+3. Apply **small rotations and translations** to make them look alive.
 
 ---
 
-## 🧩 Step 2 – Prepare your `supabaseClient.js`
+## ⚙️ Example Code — `FloatingShapes.jsx`
 
-This is the file that connects React ↔ Supabase using your `.env` keys:
+```jsx
+"use client";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-```js
-// src/supabaseClient.js
-import { createClient } from '@supabase/supabase-js'
+export default function FloatingShapes() {
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMouse({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+  return (
+    <div className="fixed right-0 top-0 h-full w-1/3 flex flex-col items-center justify-center gap-10 pointer-events-none">
+      {/* Circle */}
+      <motion.div
+        className="w-24 h-24 rounded-full bg-blue-400/40 blur-md"
+        animate={{
+          x: (mouse.x - window.innerWidth / 2) * 0.05,
+          y: (mouse.y - window.innerHeight / 2) * 0.05,
+          rotate: mouse.x * 0.05,
+        }}
+        transition={{ type: "spring", stiffness: 50, damping: 20 }}
+      />
+
+      {/* Square */}
+      <motion.div
+        className="w-20 h-20 bg-pink-400/40 rotate-45 blur-sm"
+        animate={{
+          x: (mouse.x - window.innerWidth / 2) * -0.04,
+          y: (mouse.y - window.innerHeight / 2) * 0.04,
+          rotate: mouse.y * -0.03,
+        }}
+        transition={{ type: "spring", stiffness: 50, damping: 25 }}
+      />
+
+      {/* Triangle */}
+      <motion.div
+        className="w-0 h-0 border-l-[40px] border-r-[40px] border-b-[70px] border-l-transparent border-r-transparent border-b-yellow-300/50 blur-sm"
+        animate={{
+          x: (mouse.x - window.innerWidth / 2) * 0.03,
+          y: (mouse.y - window.innerHeight / 2) * -0.03,
+          rotate: mouse.x * 0.02,
+        }}
+        transition={{ type: "spring", stiffness: 60, damping: 25 }}
+      />
+    </div>
+  );
+}
 ```
 
-You’ll import this wherever you need Supabase functions.
-
 ---
 
-## 🧩 Step 3 – Email/Password Signup
+## 💡 How to Use
 
-In your `Signup.jsx`:
+In your `Signup.jsx`, just import and drop it **beside your form**:
 
-1. **User fills the form** (`name, email, password`).
-2. **You call `supabase.auth.signUp`** inside your `handleSubmit`.
-3. Supabase creates the user and sends a confirmation email (if you enabled it).
-4. If success → navigate to `/dashboard`. If error → show error message.
+```jsx
+import FloatingShapes from "./FloatingShapes";
 
-Pseudo flow:
-
-```js
-const { data, error } = await supabase.auth.signUp({
-  email: form.email,
-  password: form.password,
-})
+export default function Signup() {
+  return (
+    <div className="relative flex min-h-screen bg-gray-50 overflow-hidden">
+      <div className="flex-1 flex items-center justify-center">
+        {/* your signup form here */}
+      </div>
+      <FloatingShapes />
+    </div>
+  );
+}
 ```
 
 ---
 
-## 🧩 Step 4 – Google OAuth
+## 🎨 Result
 
-1. Go to **Supabase Dashboard → Authentication → Providers**.
-2. Enable **Google**.
-3. Add your Google OAuth credentials (you’ll need a Google Cloud project for this).
-4. In your React app, trigger login:
+You’ll get:
 
-```js
-await supabase.auth.signInWithOAuth({
-  provider: 'google',
-})
-```
-
-This will redirect the user to Google login, then back to your site (Supabase automatically handles the token exchange).
+* A few glowing geometric shapes sitting on the **right side**.
+* They’ll **gently move and rotate** based on the mouse position — as if reacting to it.
+* You can add more shapes, gradients, or icons easily by duplicating blocks.
 
 ---
 
-## 🧩 Step 5 – After Login
-
-Once a user logs in (email/password or Google), Supabase keeps track of their **session**.
-
-* You can check the current user with `supabase.auth.getUser()`.
-* You can log them out with `supabase.auth.signOut()`.
-
----
-
-✅ So, the “flow” is:
-
-* **Email/Password**: form → `supabase.auth.signUp` → user created.
-* **Google**: button → `supabase.auth.signInWithOAuth` → Google login → redirect back.
-
----
-
-Do you want me to **first guide you through wiring up email/password signup with Supabase**, then we extend it with Google? Or should I explain **how to set up Google OAuth in Supabase dashboard** right away?
-
-
-
-
-
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$444444444444444
-
-DO NOT CLEAR THIS PART
-
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$£££££££££
-Go to Supabase dashboard
-.
-
-Select your project → Authentication → URL Configuration.
-
-In Redirect URLs, add your app’s URL. Examples:
-
-Local dev: http://localhost:5173/ (if you’re using Vite).
-
-Deployed: https://your-app.vercel.app/ (when you deploy).
-
-Save.
+Would you like me to make it look **more futuristic** (like glowing floating particles instead of geometric shapes)?
