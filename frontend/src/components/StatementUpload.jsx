@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { supabase } from "../supabaseClient";
-// Assuming you have 'toast' imported from 'react-toastify'
 import { toast, ToastContainer } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -85,7 +84,7 @@ export default function StatementUpload({ onUploadComplete }) {
   };
 
   const uploadTransactions = async (transactions) => {
-    // CRITICAL CORRECTION: Ensure user is fetched correctly, especially in serverless environments
+   
     const { data } = await supabase.auth.getUser();
     const user = data?.user;
     

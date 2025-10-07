@@ -18,14 +18,14 @@ export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 1. Fetch user
+  
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user || null);
     });
   }, []);
 
-  // Fetch transactions with RLS
+  
   const fetchTransactions = async () => {
     setIsLoading(true);
     try {
@@ -108,8 +108,7 @@ export default function Dashboard() {
 
       if (error) throw error;
 
-      // REMOVED: No need to call fetchTransactions() manually. 
-      // The Realtime listener set up in useEffect now handles the update automatically.
+   
       
       toast.success(
         `Successfully saved ${newTransactions.length} new transactions!`
