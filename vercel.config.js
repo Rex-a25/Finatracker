@@ -19,7 +19,7 @@ export default {
     // ✅ Fallback: send every non-API route to index.html in the build folder
     {
       src: "/(.*)",
-      dest: "/index.html"
+      dest: "/frontend/build/index.html"
     }
   ]
 };
