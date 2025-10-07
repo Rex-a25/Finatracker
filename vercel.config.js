@@ -16,15 +16,10 @@ export default {
       src: "/api/(.*)",
       dest: "/backend/server.js"
     },
-    
-    {
-      src: "/static/(.*)",
-      dest: "/frontend/build/static/$1"
-    },
-    // ✅ Fallback: serve index.html for all other routes (fixes 404s)
+    // ✅ Fallback: send every non-API route to index.html in the build folder
     {
       src: "/(.*)",
-      dest: "/frontend/build/index.html"
+      dest: "/index.html"
     }
   ]
 };
