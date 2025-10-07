@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "node Backend/server.js",
-    "dev": "nodemon Backend/server.js"
+    "dev": "nodemon Backend/server.js",
+     "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "",
