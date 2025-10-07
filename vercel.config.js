@@ -8,19 +8,23 @@ export default {
     {
       src: "frontend/package.json",
       use: "@vercel/static-build",
-      config: { distDir: "build" } // this is React's default build output folder
+      config: { distDir: "build" }
     }
   ],
   routes: [
-    // All API calls starting with /api go to the backend
     {
       src: "/api/(.*)",
       dest: "/backend/server.js"
     },
-    // Everything else goes to the React app
+    
+    {
+      src: "/static/(.*)",
+      dest: "/frontend/build/static/$1"
+    },
+    // ✅ Fallback: serve index.html for all other routes (fixes 404s)
     {
       src: "/(.*)",
-      dest: "/frontend/$1"
+      dest: "/frontend/build/index.html"
     }
   ]
 };
